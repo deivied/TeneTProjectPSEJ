@@ -15,24 +15,32 @@ const getAllPublicqtions = async (req, res) => {
     });
 }
 
-const postPublication = (req, res) => {
-    const publication = {
+const postPublication = (req, res, next) => {
+    console.log(req.body.publication, req.body.userId, req.body.imageUrl);
+    // req.body.publication = JSON.parse(JSON.stringify(req.body.publication));
+    
+    const url = req.protocol + '://' + req.get('host');
+    const publication = new Publication({
         publication: req.body.publication,
-        imageUrl: req.body.imageUrl,
+        imageUrl: url + '/images/' + req.file.filename,
         userId: req.body.userId
-    }
-    Publication.create(publication).then((pubilcation) => {
-        res.status(201).json({
-            status: 'succes publication',
-            body: pubilcation
-        })
-    }).catch(error => {
-        res.status(500).json({
-            status: 'error',
-            error: error
-        })
-    })
+    });
+    publication.save().then(
+        (publication) => {
+            res.status(201).json({
+                message: 'Post saved successfully!',
+                publication: publication
+            });
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
 }
+
 
 const deletePublication = (req, res) => {
     Publication.findOne({ _id: req.params.id }).then(

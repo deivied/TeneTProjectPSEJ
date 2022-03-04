@@ -6,10 +6,6 @@ const publicationSchema = new mongoose.Schema({
         type : String,
     },
 
-    date : {
-        type : String,
-        default : Date.now()
-    },
     imageUrl: { 
         type: String, 
         required: true 
@@ -17,7 +13,8 @@ const publicationSchema = new mongoose.Schema({
 
     userId: { 
         type: String,
-        required: true },
+        required: true 
+    }
 
 })
 
