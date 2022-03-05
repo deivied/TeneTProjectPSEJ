@@ -1,5 +1,6 @@
 const Publication = require('../model/pubilcation.model');
 const User = require('../model/users.model');
+const fs = require('fs');
 
 const getAllPublicqtions = async (req, res) => {
     Publication.find().then(publications => {
@@ -56,8 +57,10 @@ const deletePublication = (req, res) => {
                 });
             }
             if (publication.userId === req.auth.userId) {
+                fs.rm(publication.imageUrl, () => console.log("remove file succes"));
                 publication.deleteOne({ _id: req.params.id }).then(
-                    () => {
+                    (publication) => {
+                        
                         res.status(200).json({
                             message: 'Deleted!'
                         });

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const urlMongod = "mongodb+srv://deivied:toto@cluster0.uctov.mongodb.net/db?retryWrites=true&w=majority"
-
+const urlClusterMongod = "mongodb+srv://deivied:toto@cluster0.uctov.mongodb.net/db?retryWrites=true&w=majority"
+const urlMongod = "mongodb://localhost:27017/db";
 const connectionDB = async () => {
     try {
         await mongoose.connect(urlMongod);
