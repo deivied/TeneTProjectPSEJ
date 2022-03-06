@@ -8,7 +8,9 @@ const publicationSchema = new mongoose.Schema({
 
     imageUrl: { 
         type: String, 
-        required: true 
+    },
+    filePath: {
+        type: String,
     },
 
     userId: { 

@@ -19,11 +19,12 @@ const getAllPublicqtions = async (req, res) => {
 const postPublication = (req, res, next) => {
     console.log(req.body.publication, req.body.userId, req.body.imageUrl);
     // req.body.publication = JSON.parse(JSON.stringify(req.body.publication));
-    
+
     const url = req.protocol + '://' + req.get('host');
     const publication = new Publication({
         publication: req.body.publication,
         imageUrl: url + '/images/' + req.file.filename,
+        filePath: 'images/' + req.file.filename,
         userId: req.body.userId
     });
     publication.save().then(
@@ -57,24 +58,36 @@ const deletePublication = (req, res) => {
                 });
             }
             if (publication.userId === req.auth.userId) {
-                fs.rm(publication.imageUrl, () => console.log("remove file succes"));
-                publication.deleteOne({ _id: req.params.id }).then(
-                    (publication) => {
-                        
-                        res.status(200).json({
-                            message: 'Deleted!'
-                        });
-                    }).catch(
-                        (error) => {
-                            res.status(400).json({
-                                error: error
-                            });
-                        }
-                    );
+                console.log(publication.filePath)
+                fs.unlink(publication.filePath, () => {
+                    publication.deleteOne({ _id: req.params.id })
+                        .then(
+                            (publication) => {
+
+                                res.status(200).json({
+                                    message: 'Deleted!'
+                                });
+                            })
+                        .catch(
+                            (error) => {
+                                res.status(400).json({
+                                    error: error
+                                });
+                            }
+                        );
+
+                });
+
             }
 
         }
-    )
+    ).catch(
+        (error) => {
+            res.status(500).json({
+                error: error
+            });
+        }
+    );
 };
 
 const getOnePublication = (req, res) => {
@@ -101,22 +114,48 @@ const getOnePublication = (req, res) => {
 
 
 const putPublication = (req, res) => {
-    const publication = new Publication({
+    const url = req.protocol + '://' + req.get('host');
+    const publicationUpdate = new Publication({
         _id: req.params.id,
         publication: req.body.publication,
-        imageUrl: req.body.imageUrl,
+        imageUrl: url + '/images/' + req.file.filename,
+        filePath: 'images/' + req.file.filename,
         userId: req.body.userId
     });
-    Publication.updateOne({ _id: req.params.id }, publication).then(
+    Publication.findOne({ _id: req.params.id }).then(
         (publication) => {
-            res.status(201).json({
-                message: 'publication updated successfully!',
-                publication: publication
-            });
+            if (!publication) {
+                res.status(404).json({
+                    error: 'Publication nexiste pas'
+                });
+            }
+            if (publication.userId !== req.auth.userId) {
+                res.status(400).json({
+                    error: 'Unauthorized request!'
+                });
+            }
+            if (publication.userId === req.auth.userId) {
+                fs.unlink(publication.filePath, () => {
+                    Publication.updateOne({ _id: req.params.id }, publicationUpdate).then(
+                        (publicationUpdate) => {
+                            res.status(201).json({
+                                message: 'publication updated successfully!',
+                                publication: publicationUpdate
+                            });
+                        }
+                    ).catch(
+                        (error) => {
+                            res.status(400).json({
+                                error: error
+                            });
+                        }
+                    );
+                })
+            }
         }
     ).catch(
         (error) => {
-            res.status(400).json({
+            res.status(500).json({
                 error: error
             });
         }

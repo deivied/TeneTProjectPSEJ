@@ -3,7 +3,7 @@ const urlClusterMongod = "mongodb+srv://deivied:toto@cluster0.uctov.mongodb.net/
 const urlMongod = "mongodb://localhost:27017/db";
 const connectionDB = async () => {
     try {
-        await mongoose.connect(urlMongod);
+        await mongoose.connect(urlClusterMongod);
         console.log("Successfully connected to the database");
     } catch (error) {
         console.error(error);

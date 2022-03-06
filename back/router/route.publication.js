@@ -11,7 +11,7 @@ router.get('/publications', auth, pubilcationController.getAllPublicqtions);
 router.post('/postPublication', auth, multer, pubilcationController.postPublication);
 router.delete('/publication/:id', auth, pubilcationController.deletePublication);
 router.get('/publication/:id', auth, pubilcationController.getOnePublication);
-router.put('/publication/:id', auth, pubilcationController.putPublication)
+router.put('/publication/:id', auth, multer, pubilcationController.putPublication)
 
 
 module.exports = router;
