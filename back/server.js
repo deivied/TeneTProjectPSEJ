@@ -6,6 +6,7 @@ const routePublication = require('./router/route.publication');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const cors = require('cors')
 
 
 
@@ -23,7 +24,7 @@ const host = "localhost";
 const port = 9990;
 
 
-
+app.use(cors());
 app.use(cookieParser());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 

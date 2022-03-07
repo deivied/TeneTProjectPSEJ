@@ -19,6 +19,7 @@ const signIn = (req, res) => {
             user.save().then(
                 () => {
                     res.status(201).json({
+                        status: 'success',
                         message: 'user saved successfully!',
                         obj: {
                             prenom: req.body.prenom,
@@ -33,6 +34,7 @@ const signIn = (req, res) => {
             ).catch(
                 (error) => {
                     res.status(400).json({
+                        status: 'fail',
                         error: error
                     });
                 }
@@ -40,12 +42,14 @@ const signIn = (req, res) => {
         }).catch(
             (error) => {
                 res.status(500).json({
+                    status: 'fail',
                     error: error
                 });
             }
         )
     } else {
         res.status(400).json({
+            status: 'fail',
             message: 'the password and confirm password not match'
         });
     }
@@ -122,12 +126,14 @@ const changePassword = (req, res) => {
         bcrypt.hash(req.body.npass, 10).then(hash => {
             User.findByIdAndUpdate(session.userid, { secret: hash }).then(() => {
                 res.status(201).json({
+                    status: 'success',
                     message: 'password changed successfully!'
                 });
             }
             ).catch(
                 (error) => {
                     res.status(400).json({
+                        status: 'fail'
                         error: error
                     });
                 }
