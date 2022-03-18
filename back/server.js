@@ -12,7 +12,7 @@ const cors = require('cors')
 
 
 const app = express();
-
+app.use(cors());
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -23,8 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const host = "localhost";
 const port = 9990;
 
-
-app.use(cors());
 app.use(cookieParser());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
