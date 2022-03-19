@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 
 // router.post('/logOut_form', formController.logOut);
 
-router.post('/signUp', async (req, res, next) => {
+router.post('/signUp', formMiddleware.verifEmailOrNum, async (req, res, next) => {
     const user = req.body
     try {
         const result = await formController.signUp(user);
