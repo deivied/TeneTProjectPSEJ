@@ -3,6 +3,7 @@ const User = require('../model/users.model');
 const formController = require('../controllers/controller.form')(User);
 const formMiddleware = require('../middlewares/middleware.form');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth');
 const jwt = require('jsonwebtoken');
 
@@ -17,7 +18,15 @@ router.get("/", (req, res) => {
 // router.post('/logOut_form', formController.logOut);
 
 router.post('/signUp', formMiddleware.verifEmailOrNum, async (req, res, next) => {
-    const user = req.body
+    const saltRound = 10; 
+    const user = {
+        prenom: req.body.prenom,
+        nom: req.body.nom,
+        email: req.body.email,
+        numero: req.body.numero,
+        profil: req.body.profil,
+        password: bcrypt.hashSync(req.body.password, 10)
+    };
     try {
         const result = await formController.signUp(user);
         res.json(result);
@@ -26,7 +35,7 @@ router.post('/signUp', formMiddleware.verifEmailOrNum, async (req, res, next) =>
     }
 });
 
-// router.post('/login_form', formController.logIn);
+router.post('/signIn', formController.signIn);
 // router.post('/password_form', formController.changePassword)
 // router.get('/profil', auth, formController.profilPage);
 // router.get('/userHome', auth, formController.userPage);

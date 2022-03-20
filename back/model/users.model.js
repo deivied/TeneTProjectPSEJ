@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String
     },
-    secret: {
+    password: {
         type: String,
         required: true
     }
