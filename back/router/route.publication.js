@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const pubilcationController = require('../controllers/controller.publication');
-const auth = require('../middlewares/auth');
-const multer = require('../middlewares/multer-config')
+const auth = require('../helpers/auth');
+const multer = require('../helpers/multer-config')
 const publicationModel = require('../model/pubilcation.model');
 const fs = require('fs');
 

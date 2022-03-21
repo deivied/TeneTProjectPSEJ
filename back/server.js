@@ -1,12 +1,12 @@
 const express = require('express');
-const flash = require('flash');
 const datalayer = require('./datalayer/datalayer');
 const routeForm = require('./router/route.form');
 const routePublication = require('./router/route.publication');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const cors = require('cors')
+const cors = require('cors');
+require('dotenv').config({ path: './.env' });
 
 
 

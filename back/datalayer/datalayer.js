@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
-const urlClusterMongod = "mongodb+srv://deivied:toto@cluster0.uctov.mongodb.net/db?retryWrites=true&w=majority"
 const urlMongod = "mongodb://localhost:27017/db";
+require('dotenv').config({ path: '../.env' });
+
+
+const DB_URI = process.env.MONGODB_URI_CLUSTER || 'mongodb+srv://deivied:toto@cluster0.uctov.mongodb.net/db?';
+const mongooseOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
+
 const connectionDB = async () => {
     try {
-        await mongoose.connect(urlClusterMongod);
+        await mongoose.connect(DB_URI, mongooseOptions);
         console.log("Successfully connected to the database");
     } catch (error) {
         console.error(error);

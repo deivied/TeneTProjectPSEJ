@@ -1,41 +1,51 @@
 const express = require('express');
-const User = require('../model/users.model');
-const formController = require('../controllers/controller.form')(User);
-const formMiddleware = require('../middlewares/middleware.form');
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const auth = require('../middlewares/auth');
-const jwt = require('jsonwebtoken');
+const User = require('../model/users.model');
+const userService = require('../services/user.service')(User);
 
-router.get("/", (req, res) => {
-    res.json({
-        status: "Veuiller changer de verb et URL"
-    })
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  res.json({user:'Ok'});
+});
+
+router.post('/signUp',async (req,res,next)=>{
+  const  _user=req.body;
+  try {
+    let response = await userService.register(_user);
+    res.json(response);
+  } catch (error) {
+    next(error)
+  }
+});
+
+router.post('/signIn', async function (req, res, next) {
+    try {
+      let {email,password} = req.body;
+      res.json(await userService.authenticate(email, password));
+    } catch (error) {
+      next(error)
+    }
+  
 });
 
 // router.get("/login", formController.logPage);
 
 // router.post('/logOut_form', formController.logOut);
 
-router.post('/signUp', formMiddleware.verifEmailOrNum, async (req, res, next) => {
-    const saltRound = 10; 
-    const user = {
-        prenom: req.body.prenom,
-        nom: req.body.nom,
-        email: req.body.email,
-        numero: req.body.numero,
-        profil: req.body.profil,
-        password: bcrypt.hashSync(req.body.password, 10)
-    };
+// router.post('/signUp', helpers.verifEmailAndNumero, formController.signUp);
+
+
+
+
+router.post('/signIn', async function (req, res, next) {
     try {
-        const result = await formController.signUp(user);
-        res.json(result);
+        let { email, profil, password } = req.body;
+        res.json(await formController.signIn(email, profil, password));
     } catch (error) {
         next(error)
     }
-});
 
-router.post('/signIn', formController.signIn);
+});
 // router.post('/password_form', formController.changePassword)
 // router.get('/profil', auth, formController.profilPage);
 // router.get('/userHome', auth, formController.userPage);
