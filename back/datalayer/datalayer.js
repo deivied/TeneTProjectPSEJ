@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const urlMongod = "mongodb://localhost:27017/db";
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config()
 
-
-const DB_URI = process.env.MONGODB_URI_CLUSTER || 'mongodb+srv://deivied:toto@cluster0.uctov.mongodb.net/db?';
+// const DB_URI = process.env.MONGODB_URI_CLUSTER || 'mongodb+srv://deivied:toto@cluster0.uctov.mongodb.net/db?';
+const DB_URI = process.env.MONGODB_URI_CLUSTER0 || process.env.MONGODB_URI_CLUSTER1
 const mongooseOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true

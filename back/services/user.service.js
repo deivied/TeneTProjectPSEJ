@@ -26,9 +26,9 @@ const register = (User) => async (user) =>{
 };
 
 
-const authenticate = User => async (email, profil, password)=>{
+const authenticate = User => async (email,password,profil)=>{
     try {
-        const user = await User.findOne({ "email": email });
+        const user = await User.findOne({ email: email, profil:profil });
         if (comparePassword(password, user.password)) {
             const token = generateMeAToken(user);
             return ({
