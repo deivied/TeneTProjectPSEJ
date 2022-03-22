@@ -10,12 +10,21 @@ const routes: Routes = [
     component:HomesComponent
   },
   {
+    path:'userHome',
+    component:HomesComponent
+  },
+  {
     path:'signUp',
     component:RegisterComponent
   },
   {
     path:'signIn',
     component:SigninComponent
+  },
+  {
+    path:'**',
+    redirectTo:'',
+    pathMatch:'full'
   },
 ];
 

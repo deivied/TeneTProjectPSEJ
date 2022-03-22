@@ -18,10 +18,9 @@ router.post('/signUp',async (req,res,next)=>{
   }
 });
 
-router.post('/signIn', async function (req, res, next) {
+router.post('/signIn', async (req, res, next) => {
     try {
-      let {email,password} = req.body;
-      res.json(await userService.authenticate(email, password));
+      res.json(await userService.authenticate(req.body.email, req.body.password, req.body.profil ));
     } catch (error) {
       next(error)
     }
@@ -34,18 +33,6 @@ router.post('/signIn', async function (req, res, next) {
 
 // router.post('/signUp', helpers.verifEmailAndNumero, formController.signUp);
 
-
-
-
-router.post('/signIn', async function (req, res, next) {
-    try {
-        let { email, profil, password } = req.body;
-        res.json(await formController.signIn(email, profil, password));
-    } catch (error) {
-        next(error)
-    }
-
-});
 // router.post('/password_form', formController.changePassword)
 // router.get('/profil', auth, formController.profilPage);
 // router.get('/userHome', auth, formController.userPage);

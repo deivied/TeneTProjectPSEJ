@@ -26,11 +26,9 @@ const register = (User) => async (user) =>{
 };
 
 
-const authenticate = User => async (email,password)=>{
+const authenticate = User => async (email, profil, password)=>{
     try {
-        const user = await User.findOne({
-            email: email
-        });
+        const user = await User.findOne({ "email": email });
         if (comparePassword(password, user.password)) {
             const token = generateMeAToken(user);
             return ({
@@ -45,7 +43,7 @@ const authenticate = User => async (email,password)=>{
             return ({
                 status: "error",
                 message: "Invalid email or password!!!",
-                payload: null
+                payload: user
             })
         }
     } catch (error) {
