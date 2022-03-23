@@ -4,12 +4,12 @@ const User = require('../model/users.model');
 const userService = require('../services/user.service')(User);
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.json({user:'Ok'});
+router.get('/', function (req, res, next) {
+  res.json({ user: 'Ok' });
 });
 
-router.post('/signUp',async (req,res,next)=>{
-  const  _user=req.body;
+router.post('/signUp', async (req, res, next) => {
+  const _user = req.body;
   try {
     let response = await userService.register(_user);
     res.json(response);
@@ -19,12 +19,13 @@ router.post('/signUp',async (req,res,next)=>{
 });
 
 router.post('/signIn', async (req, res, next) => {
-    try {
-      res.json(await userService.authenticate(req.body.email, req.body.password, req.body.profil ));
-    } catch (error) {
-      next(error)
-    }
-  
+  try {
+    let { email, password, profil } = req.body;
+    res.json(await userService.authenticate(email, password, profil));
+  } catch (error) {
+    next(error)
+  }
+
 });
 
 // router.get("/login", formController.logPage);
